@@ -10,7 +10,7 @@ import kotlin.time.TimeSource
  * This class manages data operations associated with the OpenWeather's current weather API.
  */
 class CurrentWeatherRepository (
-    private val service: OpenWeatherService,
+    private val service: MusicService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     /*

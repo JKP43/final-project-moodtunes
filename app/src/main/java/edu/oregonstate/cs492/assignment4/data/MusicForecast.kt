@@ -8,7 +8,6 @@ import com.squareup.moshi.JsonClass
  * 5-day/3-hour forecast.
  */
 @JsonClass(generateAdapter = true)
-data class FiveDayForecast(
-    @Json(name = "list") val periods: List<ForecastPeriod>,
-    val city: ForecastCity
+data class MusicForecast(
+    @Json(name = "list") val periods: List<MusicFormat>
 )

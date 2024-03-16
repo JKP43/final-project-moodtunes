@@ -10,7 +10,7 @@ import kotlin.time.TimeSource
  * This class manages data operations associated with the OpenWeather API 5-day/3-hour forecast.
  */
 class FiveDayForecastRepository (
-    private val service: OpenWeatherService,
+    private val service: MusicService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     /*
