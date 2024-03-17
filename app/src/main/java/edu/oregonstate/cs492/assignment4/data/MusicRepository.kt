@@ -9,7 +9,7 @@ import kotlin.time.TimeSource
 /**
  * This class manages data operations associated with the OpenWeather API 5-day/3-hour forecast.
  */
-class FiveDayForecastRepository (
+class MusicRepository (
     private val service: MusicService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
@@ -18,9 +18,8 @@ class FiveDayForecastRepository (
      * is only executed if the requested location or units don't match the ones from the previous
      * API call.
      */
-    private var currentLocation: String? = null
-    private var currentUnits: String? = null
-    private var cachedForecast: FiveDayForecast? = null
+    private var currentTags: String? = null
+    private var cachedMusic: MusicForecast? = null
 
     /*
      * These values are used to help measure the age of the cached forecast.  See the Kotlin
@@ -49,25 +48,23 @@ class FiveDayForecastRepository (
      *   Exception associated with the Result object will provide more info about why the query
      *   failed.
      */
-    suspend fun loadFiveDayForecast(
-        location: String?,
-        units: String?,
-        apiKey: String
-    ) : Result<FiveDayForecast?> {
+    suspend fun loadMusic(
+        clientId: String,
+        tags: String?
+    ) : Result<MusicForecast?> {
         /*
          * If we can do so, return the cached forecast without making a network call.  Otherwise,
          * make an API call to fetch the forecast and cache it.
          */
-        return if (shouldFetch(location, units)) {
+        return if (shouldFetch(tags)) {
             withContext(ioDispatcher) {
                 try {
-                    val response = service.loadFiveDayForecast(location, units, apiKey)
+                    val response = service.loadMusic(clientId, tags)
                     if (response.isSuccessful) {
-                        cachedForecast = response.body()
+                        cachedMusic = response.body()
                         timeStamp = timeSource.markNow()
-                        currentLocation = location
-                        currentUnits = units
-                        Result.success(cachedForecast)
+                        currentTags = tags
+                        Result.success(cachedMusic)
                     } else {
                         Result.failure(Exception(response.errorBody()?.string()))
                     }
@@ -76,7 +73,7 @@ class FiveDayForecastRepository (
                 }
             }
         } else {
-            Result.success(cachedForecast!!)
+            Result.success(cachedMusic!!)
         }
     }
 
@@ -94,9 +91,8 @@ class FiveDayForecastRepository (
      * @return Returns true if the forecast should be fetched and false if the cached version
      *   should be used.
      */
-    private fun shouldFetch(location: String?, units: String?): Boolean =
-        cachedForecast == null
-        || location != currentLocation
-        || units != currentUnits
+    private fun shouldFetch(tags: String?): Boolean =
+        cachedMusic == null
+        || tags != currentTags
         || (timeStamp + cacheMaxAge).hasPassedNow()
 }

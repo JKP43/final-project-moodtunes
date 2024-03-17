@@ -9,5 +9,5 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class MusicForecast(
-    @Json(name = "list") val periods: List<MusicFormat>
+    @Json(name = "list") val songs: List<MusicFormat>
 )

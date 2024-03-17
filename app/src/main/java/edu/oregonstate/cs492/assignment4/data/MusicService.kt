@@ -30,7 +30,7 @@ interface MusicService {
     suspend fun loadMusic(
         @Query("client_id") clientId: String,
         @Query("tags") tags: String?
-    ) : Response<MusicResults>
+    ) : Response<MusicForecast>
 
     companion object {
         private const val BASE_URL = "https://api.jamendo.com/v3.0/tracks/"
