@@ -15,11 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import edu.oregonstate.cs492.assignment4.ui.theme.Assignment4Theme
 
 
 class MainScreenFragment : Fragment() {
@@ -31,12 +29,10 @@ class MainScreenFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val selectedMood = remember { mutableStateOf("") }
-                Assignment4Theme {
-                    MainScreen(onMoodSelected = { mood ->
-                        selectedMood.value = mood
-                        navigateToSongs(mood)
-                    })
-                }
+                MainScreen(onMoodSelected = { mood ->
+                    selectedMood.value = mood
+                    navigateToSongs(mood)
+                })
             }
         }
     }
