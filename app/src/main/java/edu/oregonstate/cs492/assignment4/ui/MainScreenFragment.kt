@@ -2,42 +2,75 @@ package edu.oregonstate.cs492.assignment4.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import edu.oregonstate.cs492.assignment4.R
+import androidx.navigation.fragment.findNavController
+import edu.oregonstate.cs492.assignment4.ui.theme.Assignment4Theme
 
-class MainScreenFragment : Fragment(R.layout.main_screen) {
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        val happyButton = view.findViewById<Button>(R.id.happyButton)
-        val sadButton = view.findViewById<Button>(R.id.sadButton)
-        val angryButton = view.findViewById<Button>(R.id.angryButton)
-        val relaxedButton = view.findViewById<Button>(R.id.relaxedButton)
-
-        // Set onClickListeners for each mood button
-        happyButton.setOnClickListener {
-            // Navigate to SongsActivity and pass the mood
-            navigateToSongs("happy")
-        }
-
-        sadButton.setOnClickListener {
-            navigateToSongs("sad")
-        }
-
-        angryButton.setOnClickListener {
-            navigateToSongs("angry")
-        }
-
-        relaxedButton.setOnClickListener {
-            navigateToSongs("relaxed")
+class MainScreenFragment : Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                Assignment4Theme {
+                    MainScreen(onMoodSelected = { mood ->
+                        navigateToSongs(mood)
+                    })
+                }
+            }
         }
     }
 
     private fun navigateToSongs(mood: String) {
         val intent = Intent(requireContext(), MusicActivity::class.java)
-        intent.putExtra("mood", mood)
+        intent.putExtra("musicList", mood)
         startActivity(intent)
     }
 }
+
+@Composable
+fun MainScreen(onMoodSelected: (String) -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        MoodButton(text = "Happy", onClick = { onMoodSelected("Happy") })
+        MoodButton(text = "Sad", onClick = { onMoodSelected("Sad") })
+        MoodButton(text = "Angry", onClick = { onMoodSelected("Angry") })
+        MoodButton(text = "Relaxed", onClick = { onMoodSelected("Relaxed") })
+    }
+}
+
+@Composable
+fun MoodButton(text: String, onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        Text(text = text)
+    }
+}
+
+//@Preview
+//@Composable
+//fun PreviewMainScreen() {
+//    Assignment4Theme {
+//        MainScreen(onMoodSelected = {})
+//    }
+//}
