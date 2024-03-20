@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -114,6 +113,18 @@ fun MainScreen(onMoodSelected: (String) -> Unit) {
                     }
                     item {
                         MoodButton("😌", onClick = { onMoodSelected("Relaxed") }, isDarkTheme = isDarkTheme)
+                    }
+                    item {
+                        MoodButton("😎", onClick = { onMoodSelected("Cool") }, isDarkTheme = isDarkTheme)
+                    }
+                    item {
+                        MoodButton("🤩", onClick = { onMoodSelected("Party") }, isDarkTheme = isDarkTheme)
+                    }
+                    item {
+                        MoodButton("😑", onClick = { onMoodSelected("Neutral") }, isDarkTheme = isDarkTheme)
+                    }
+                    item {
+                        MoodButton("❓", onClick = { onMoodSelected("Random") }, isDarkTheme = isDarkTheme)
                     }
                 }
             }
