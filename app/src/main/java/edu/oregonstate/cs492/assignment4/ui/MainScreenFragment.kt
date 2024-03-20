@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -25,11 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 
 
 class MainScreenFragment : Fragment() {
@@ -81,7 +80,8 @@ fun MainScreen(onMoodSelected: (String) -> Unit) {
                         style = MaterialTheme.typography.body1,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = 8.dp)
+                            .padding(end = 16.dp)
+                            .padding(vertical = 12.dp, horizontal = 16.dp)
                     )
                     Switch(
                         checked = isDarkTheme,
@@ -97,7 +97,8 @@ fun MainScreen(onMoodSelected: (String) -> Unit) {
                         style = MaterialTheme.typography.body1,
                         modifier = Modifier
                             .weight(1f)
-                            .padding(start = 8.dp)
+                            .padding(start = 16.dp)
+                            .padding(vertical = 12.dp, horizontal = 16.dp)
                     )
                 }
 
