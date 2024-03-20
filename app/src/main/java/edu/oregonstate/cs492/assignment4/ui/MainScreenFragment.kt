@@ -60,8 +60,8 @@ class MainScreenFragment : Fragment() {
 fun MainScreen(onMoodSelected: (String) -> Unit) {
     var isDarkTheme by remember { mutableStateOf(false) }
 
-    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
-    val textColor = if (isDarkTheme) Color.White else Color.Black
+    val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.LightGray
+    val textColor = if (isDarkTheme) Color.LightGray else Color.DarkGray
 
     MaterialTheme(
         colors = if (isDarkTheme) darkColors() else lightColors()
@@ -128,8 +128,8 @@ fun MoodButton(emoji: String, onClick: () -> Unit, isDarkTheme:Boolean) {
             .padding(8.dp)
             .height(100.dp),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (isDarkTheme) Color.Gray else Color.White,
-            contentColor = if (isDarkTheme) Color.White else Color.Black
+            backgroundColor = if (isDarkTheme) Color.LightGray else Color.Gray,
+            contentColor = if (isDarkTheme) Color.Gray else Color.LightGray
         )
     ) {
         Text(
