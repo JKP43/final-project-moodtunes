@@ -58,22 +58,10 @@ class MusicActivity : AppCompatActivity() {
                     )
                 )
             }
-
-
-
-            // Build Spotify Uri
-            val spotifyUri = "spotify:${selectedMusic.shortUrl}"
-
-            // Open Spotify using Intent
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(spotifyUri))
-            intent.setPackage("com.spotify.music") // Specify Spotify app to open the link
-
-            // Check if Spotify app is installed on the device
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Spotify app is not installed", Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
+            // Open the share URL of the selected music in browser
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(selectedMusic.shareUrl))
+            startActivity(intent)
         }
     }
 }
