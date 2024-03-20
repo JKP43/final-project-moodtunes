@@ -61,7 +61,7 @@ class CurrentWeatherRepository (
         return if (shouldFetch(location, units)) {
             withContext(ioDispatcher) {
                 try {
-                    val response = service.loadCurrentWeather(location, units, apiKey)
+                    val response = service.loadMusic(location, units, apiKey)
                     if (response.isSuccessful) {
                         cachedWeather = response.body()
                         timeStamp = timeSource.markNow()

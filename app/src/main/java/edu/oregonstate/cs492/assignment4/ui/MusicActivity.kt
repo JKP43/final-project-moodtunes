@@ -8,8 +8,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import edu.oregonstate.cs492.assignment4.R
+import edu.oregonstate.cs492.assignment4.data.AppDatabase
+import edu.oregonstate.cs492.assignment4.data.DatabaseBuilder
 import edu.oregonstate.cs492.assignment4.data.MusicFormat
+import edu.oregonstate.cs492.assignment4.data.SongEntity
+import kotlinx.coroutines.launch
 
 class MusicActivity : AppCompatActivity() {
     // Assume the music list is passed from the previous page or fetched based on mood search
@@ -35,6 +41,25 @@ class MusicActivity : AppCompatActivity() {
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             // Get the clicked song
             val selectedMusic = musicList[position]
+
+            // Inside your ListView's click listener, after the selectedMusic is defined
+            val db = DatabaseBuilder.getInstance(applicationContext)
+            val songDao = db.songDao()
+
+            lifecycleScope.launch {
+                songDao.insertSong(
+                    SongEntity(
+                        artist = selectedMusic.artist,
+                        songTitle = selectedMusic.songTitle,
+                        shortUrl = selectedMusic.shortUrl,
+                        shareUrl = selectedMusic.shareUrl,
+                        songImage = selectedMusic.songImage,
+                        duration = selectedMusic.duration
+                    )
+                )
+            }
+
+
 
             // Build Spotify Uri
             val spotifyUri = "spotify:${selectedMusic.shortUrl}"
