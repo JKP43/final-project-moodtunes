@@ -5,26 +5,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.ToJson
 
-///**
-// * This class encapsulates data about the city fetched from the OpenWeather API's 5-day/3-hour
-// * forecast.  It does not directly correspond to the JSON data.  The classes below are used for
-// * JSON parsing, and information from them is used by the custom JSON adapter at the bottom of
-// * this file to construct this class.
-// */
-//data class Music(
-//    val name: String,
-//    val lat: Double,
-//    val lon: Double,
-//    val tzOffsetSec: Int
-//)
-
-/* ******************************************************************************************
- * Below is a set of classes used to parse the JSON response from the OpenWeather API into
- * a ForecastCity object.  The first two classes are designed to match the structure of the
- * the `city` field in the OpenWeather 5-day forecast API's JSON response.  The last is a
- * custom type adapter that can be used with Moshi to parse OpenWeather JSON directly into
- * a ForecastCity object.
- * ******************************************************************************************/
 
 
 data class MusicFormat(
@@ -37,7 +17,7 @@ data class MusicFormat(
 )
 
 /**
- * This class represents the `city` field of the JSON response from the OpenWeather API.
+ * This class represents the Track data from the api response.
  */
 @JsonClass(generateAdapter = true)
 data class Track(
@@ -51,7 +31,6 @@ data class Track(
     @Json(name = "album_id") val albumId: String,
     @Json(name = "license_ccurl") val licenseCcurl: String,
     val position: Int,
-    val releaseDate: String,
     @Json(name = "album_image") val albumImage: String,
     val audio: String,
     @Json(name = "audiodownload") val audioDownload: String,
@@ -63,19 +42,9 @@ data class Track(
     @Json(name = "audiodownload_allowed") val audioDownloadAllowed: Boolean
 )
 
-@JsonClass(generateAdapter = true)
-data class Headers(
-    val status: String,
-    val code: Int,
-    @Json(name = "error_message") val errorMessage: String,
-    val warnings: String,
-    @Json(name = "results_count") val resultsCount: Int,
-    val next: String
-)
 
 @JsonClass(generateAdapter = true)
 data class MusicJson(
-    @Json(name = "headers") val headers: Headers,
     @Json(name = "results") val results: MusicResults
 )
 

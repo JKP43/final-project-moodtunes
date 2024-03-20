@@ -16,29 +16,26 @@ interface MusicService {
      * https://openweathermap.org/forecast5.  This is a suspending function, so it must be called
      * in a coroutine or within another suspending function.
      *
-     * @param location Specifies the location for which to fetch forecast data.  For US cities,
-     *   this should be specified as "<city>,<state>,<country>" (e.g. "Corvallis,OR,US"), while
-     *   for international cities, it should be specified as "<city>,<country>" (e.g. "London,GB").
-     * @param units Specifies the type of units that should be returned by the OpenWeather API.
-     *   Can be one of: "standard", "metric", and "imperial".
-     * @param apiKey Should be a valid OpenWeather API key.
+     * @param client_id Specifies the id of the api user.
+     * @param tags Specifies the type of music that should be returned by the api endpoint".
      *
-     * @return Returns a Retrofit `Response<>` object that will contain a [FiveDayForecast] object
+     * @return Returns a Retrofit `Response<>` object that will contain a [MusicForecast] object
      *   if the API call was successful.
      */
-    @GET("forecast")
+    @GET("tracks")
     suspend fun loadMusic(
         @Query("client_id") clientId: String,
-        @Query("tags") tags: String?
+        @Query("tags") tags: String?,
+        @Query("limit") limit: Int?,
     ) : Response<MusicForecast>
 
     companion object {
-        private const val BASE_URL = "https://api.jamendo.com/v3.0/tracks/"
+        private const val BASE_URL = "https://api.jamendo.com/v3.0/"
 
         /**
-         * This method can be called as `OpenWeatherService.create()` to create an object
-         * implementing the OpenWeatherService interface and which can be used to make calls to
-         * the OpenWeather API.
+         * This method can be called as `MusicService.create()` to create an object
+         * implementing the MusicService interface and which can be used to make calls to
+         * the Jamendo API.
          */
         fun create() : MusicService {
             val moshi = Moshi.Builder()

@@ -1,5 +1,6 @@
 package edu.oregonstate.cs492.assignment4.data
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -7,7 +8,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.TimeSource
 
 /**
- * This class manages data operations associated with the OpenWeather API 5-day/3-hour forecast.
+ * This class manages data operations associated with the Jamendo tracks api endpoint.
  */
 class MusicRepository (
     private val service: MusicService,
@@ -15,7 +16,7 @@ class MusicRepository (
 ) {
     /*
      * These three properties are used to implement a basic caching strategy, where an API call
-     * is only executed if the requested location or units don't match the ones from the previous
+     * is only executed if the requested tags don't match the ones from the previous
      * API call.
      */
     private var currentTags: String? = null
@@ -36,21 +37,18 @@ class MusicRepository (
      * is a suspending function and executes within the coroutine context specified by the
      * `dispatcher` argument to the Repository class's constructor.
      *
-     * @param location Specifies the location for which to fetch forecast data.  For US cities,
-     *   this should be specified as "<city>,<state>,<country>" (e.g. "Corvallis,OR,US"), while
-     *   for international cities, it should be specified as "<city>,<country>" (e.g. "London,GB").
-     * @param units Specifies the type of units that should be returned by the OpenWeather API.
-     *   Can be one of: "standard", "metric", and "imperial".
-     * @param apiKey Should be a valid OpenWeather API key.
+     * @param clientId Specifies the id of the user.
+     * @param tags Specifies the tags of songs that should be returned by the api.
      *
-     * @return Returns a Kotlin Result object wrapping the [FiveDayForecast] object that
+     * @return Returns a Kotlin Result object wrapping the [MusicForecast] object that
      *   represents the fetched forecast.  If the API query is unsuccessful for some reason, the
      *   Exception associated with the Result object will provide more info about why the query
      *   failed.
      */
     suspend fun loadMusic(
         clientId: String,
-        tags: String?
+        tags: String?,
+        limit: Int?,
     ) : Result<MusicForecast?> {
         /*
          * If we can do so, return the cached forecast without making a network call.  Otherwise,
@@ -59,9 +57,10 @@ class MusicRepository (
         return if (shouldFetch(tags)) {
             withContext(ioDispatcher) {
                 try {
-                    val response = service.loadMusic(clientId, tags)
+                    val response = service.loadMusic(clientId, tags, limit)
                     if (response.isSuccessful) {
                         cachedMusic = response.body()
+                        Log.d("MusicRepository", "Response: $cachedMusic")
                         timeStamp = timeSource.markNow()
                         currentTags = tags
                         Result.success(cachedMusic)
@@ -69,7 +68,9 @@ class MusicRepository (
                         Result.failure(Exception(response.errorBody()?.string()))
                     }
                 } catch (e: Exception) {
+                    Log.e("MusicRepository", "Exception: $e")
                     Result.failure(e)
+
                 }
             }
         } else {
@@ -83,10 +84,8 @@ class MusicRepository (
      * location and units match the ones corresponding to the cached forecast and the cached
      * forecast is not stale.
      *
-     * @param location The location for which a forecast is to be potentially fetched, as passed
-     *   to `loadFiveDayForecast()`.
-     * @param units The type of units to use in a forecast that is to be potentially fetched,
-     *   as passed to `loadFiveDayForecast()`.
+     * @param tags The tags for which type of music is to be potentially fetched, as passed
+     *   to `loadMusic()`.
      *
      * @return Returns true if the forecast should be fetched and false if the cached version
      *   should be used.
