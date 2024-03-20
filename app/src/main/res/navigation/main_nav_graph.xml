@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/main_screen"
-        android:label="@string/label_current_weather"
+        android:label="Select Your Mood"
         android:name="edu.oregonstate.cs492.assignment4.ui.MainScreenFragment">
         <action
             android:id="@+id/navigate_to_five_day_forecast"
