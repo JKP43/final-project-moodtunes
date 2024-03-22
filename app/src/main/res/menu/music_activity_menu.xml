@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_view_saved_songs"
         android:icon="@drawable/ic_view_saved_songs"
+        android:title="Saved songs"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 </menu>

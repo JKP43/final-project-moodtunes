@@ -1,6 +1,9 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
@@ -24,13 +27,37 @@ class SavedSongsActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.saved_songs_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        // Assume SavedSongsAdapter is similar to your MusicListAdapter but for displaying saved songs
         val adapter = SavedSongsAdapter(emptyList())
         recyclerView.adapter = adapter
 
         lifecycleScope.launch {
             val songs = DatabaseBuilder.getInstance(applicationContext).songDao().getAllSongs()
-            adapter.updateSongs(songs) // Implement this method in your adapter to update the list and notifyDataSetChanged
+            adapter.updateSongs(songs)
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.saved_songs_menu, menu)
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_home -> {
+                navigateToHome()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun navigateToHome() {
+        val homeIntent = Intent(this, MainActivity::class.java)
+        homeIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(homeIntent)
+        finish()
+    }
+
+
 }
