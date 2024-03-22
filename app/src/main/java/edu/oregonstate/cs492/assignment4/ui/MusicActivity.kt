@@ -38,7 +38,31 @@ class MusicActivity () : AppCompatActivity() {
         val listView: ListView = findViewById(R.id.listView)
 
         // Use ArrayAdapter to display song titles in the ListView
-        val adapter = MusicListAdapter(this, R.layout.music_list_item, musicTitles)
+// This is inside onCreate of MusicActivity
+        val adapter = MusicListAdapter(
+            this,
+            R.layout.music_list_item,
+            musicTitles,
+            onSaveAndViewClicked = { musicItem ->
+                lifecycleScope.launch {
+                    DatabaseBuilder.getInstance(applicationContext).songDao().insertSong(
+                        SongEntity(
+                            artist = musicItem.artist,
+                            songTitle = musicItem.songTitle,
+                            shortUrl = musicItem.shortUrl,
+                            shareUrl = musicItem.shareUrl,
+                            songImage = musicItem.songImage,
+                            duration = musicItem.duration
+                        )
+                    )
+                    Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
+                }
+                // You can call navigateToSavedSongs() here if you want immediate navigation
+                // after saving. If you only want to navigate without saving, adjust as needed.
+                navigateToSavedSongs()
+            }
+        )
+
         listView.adapter = adapter
 
 
@@ -84,6 +108,12 @@ class MusicActivity () : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun navigateToSavedSongs() {
+        val intent = Intent(this, SavedSongsActivity::class.java)
+        startActivity(intent)
+    }
+
 
     override fun onStart() {
         super.onStart()
