@@ -35,6 +35,16 @@
         android:paddingEnd="8dp"/>
 
         <Button
+            android:id="@+id/shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            android:layout_below="@id/songImageView"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"/>
+        <Button
             android:id="@+id/saveAndViewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

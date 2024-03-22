@@ -11,7 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import edu.oregonstate.cs492.assignment4.R
-
+import android.content.Intent
+import android.net.Uri
 class MusicListAdapter(
     context: Context,
     private val resourceLayout: Int,
@@ -32,6 +33,7 @@ class MusicListAdapter(
         val songTitleTextView = rowView.findViewById<TextView>(R.id.songTitleTextView)
         val songImageView = rowView.findViewById<ImageView>(R.id.songImageView)
         val saveAndViewButton = rowView.findViewById<Button>(R.id.saveAndViewButton)
+        val shareButton = rowView.findViewById<Button>(R.id.shareButton)
 
         artistTextView.text = musicItem.artist
         songTitleTextView.text = musicItem.songTitle
@@ -43,7 +45,13 @@ class MusicListAdapter(
         saveAndViewButton.setOnClickListener {
             onSaveAndViewClicked(musicItem) // Invoke the callback with the current music item
         }
-
+        shareButton.setOnClickListener {
+            // Handle share action here
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_TEXT, musicItem.shareUrl)
+            context.startActivity(Intent.createChooser(shareIntent, "Share via"))
+        }
         return rowView
     }
 }
