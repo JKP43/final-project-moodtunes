@@ -2,6 +2,7 @@ package edu.oregonstate.cs492.assignment4.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,13 @@ class SavedSongsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saved_songs)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Saved Songs"
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val recyclerView = findViewById<RecyclerView>(R.id.saved_songs_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
