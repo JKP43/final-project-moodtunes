@@ -17,8 +17,8 @@
 
         <activity
             android:name=".ui.SavedSongsActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:exported="false" />
+            android:parentActivityName=".ui.MusicActivity"
+            android:exported="true" />
 
         <activity
             android:name=".ui.MusicActivity"

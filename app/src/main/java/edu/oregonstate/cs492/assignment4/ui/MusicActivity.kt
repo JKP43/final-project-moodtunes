@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -112,6 +114,25 @@ class MusicActivity () : AppCompatActivity() {
             // Open the share URL of the selected music in browser
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(selectedMusic.shareUrl))
             startActivity(intent)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.music_activity_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_view_saved_songs -> {
+                navigateToSavedSongs()
+                true
+            }
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

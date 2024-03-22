@@ -66,26 +66,22 @@ class MainActivity : AppCompatActivity() {
          * Set up a MenuProvider to provide and handle app bar actions for all screens under this
          * activity.
          */
-        addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.main_menu, menu)
-                }
+    }
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    return when (menuItem.itemId) {
-                        R.id.action_settings -> {
-                            findNavController(R.id.nav_host_fragment).navigate(R.id.settings)
-                            true
-                        }
-                        else -> false
-                    }
-                }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
 
-            },
-            this,
-            Lifecycle.State.STARTED
-        )
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_view_saved_songs -> {
+                val intent = Intent(this, SavedSongsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
