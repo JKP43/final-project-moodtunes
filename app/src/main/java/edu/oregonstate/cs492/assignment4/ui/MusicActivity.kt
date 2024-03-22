@@ -44,7 +44,7 @@ class MusicActivity () : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        // Retrieve the theme choice from intent extras
+        // Retrieve the theme choice from sharedPreferences
         val isDarkTheme = sharedPreferences.getBoolean("is_dark_theme", false)
 
 
