@@ -30,7 +30,7 @@ class SavedSongsActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = SavedSongsAdapter(emptyList()) { songToDelete ->
             lifecycleScope.launch {
-                DatabaseBuilder.getInstance(applicationContext).songDao().deleteSong(songToDelete.shortUrl)
+                DatabaseBuilder.getInstance(applicationContext).songDao().deleteSong(songToDelete.shareUrl)
                 refreshSongs()
             }
         }

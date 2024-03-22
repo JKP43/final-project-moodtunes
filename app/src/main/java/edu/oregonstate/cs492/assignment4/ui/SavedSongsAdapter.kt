@@ -46,9 +46,8 @@ class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDelet
                 .load(song.songImage)
                 .into(songImageView)
 
-            if (!song.shortUrl.isNullOrEmpty()) {
+            if (song.shortUrl.isNotBlank()) {
                 songImageView.setOnClickListener {
-
                     val mediaPlayer = MediaPlayer()
                     mediaPlayer.setDataSource(song.shortUrl)
                     mediaPlayer.prepareAsync()
@@ -64,23 +63,13 @@ class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDelet
                         }, 15000)
                     }
 
-                    mediaPlayer.setOnCompletionListener { mediaPlayer ->
-                        mediaPlayer.release()
-                    }
 
-                    songImageView.setOnClickListener {
-                        if (mediaPlayer.isPlaying) {
-                            mediaPlayer.pause()
-                        } else {
-                            mediaPlayer.start()
-                        }
-                    }
                 }
             } else {
-                songImageView.setImageAlpha(100)
+                songImageView.setImageAlpha(30)
             }
+
+
         }
-
-
     }
 }

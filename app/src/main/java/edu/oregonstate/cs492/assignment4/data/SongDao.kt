@@ -14,6 +14,6 @@ interface SongDao {
 
     @Query("SELECT * FROM songs")
     suspend fun getAllSongs(): List<SongEntity>
-    @Query("DELETE FROM songs WHERE shortUrl = :shortUrl")
-    suspend fun deleteSong(shortUrl: String)
+    @Query("DELETE FROM songs WHERE shareUrl = :shareUrl")
+    suspend fun deleteSong(shareUrl: String)
 }

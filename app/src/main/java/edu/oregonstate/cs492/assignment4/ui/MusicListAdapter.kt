@@ -54,9 +54,8 @@ class MusicListAdapter(
             context.startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
 
-        if (!musicItem.shortUrl.isNullOrEmpty()) {
+        if (musicItem.shortUrl.isNotBlank()) {
             songImageView.setOnClickListener {
-
                 val mediaPlayer = MediaPlayer()
                 mediaPlayer.setDataSource(musicItem.shortUrl)
                 mediaPlayer.prepareAsync()
@@ -72,13 +71,6 @@ class MusicListAdapter(
                     }, 15000)
                 }
 
-                songImageView.setOnClickListener {
-                    if (mediaPlayer.isPlaying) {
-                        mediaPlayer.pause()
-                    } else {
-                        mediaPlayer.start()
-                    }
-                }
             }
         } else {
             songImageView.setImageAlpha(30)
