@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import edu.oregonstate.cs492.assignment4.R
 import android.content.Intent
+import android.media.MediaPlayer
 import android.net.Uri
 class MusicListAdapter(
     context: Context,
@@ -52,6 +53,37 @@ class MusicListAdapter(
             shareIntent.putExtra(Intent.EXTRA_TEXT, musicItem.shareUrl)
             context.startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
+
+        if (!musicItem.shortUrl.isNullOrEmpty()) {
+            songImageView.setOnClickListener {
+
+                val mediaPlayer = MediaPlayer()
+                mediaPlayer.setDataSource(musicItem.shortUrl)
+                mediaPlayer.prepareAsync()
+
+                mediaPlayer.setOnPreparedListener { mediaPlayer ->
+                    mediaPlayer.start()
+
+                    songImageView.postDelayed({
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.stop()
+                            mediaPlayer.release()
+                        }
+                    }, 15000)
+                }
+
+                songImageView.setOnClickListener {
+                    if (mediaPlayer.isPlaying) {
+                        mediaPlayer.pause()
+                    } else {
+                        mediaPlayer.start()
+                    }
+                }
+            }
+        } else {
+            songImageView.setImageAlpha(30)
+        }
+
         return rowView
     }
 }

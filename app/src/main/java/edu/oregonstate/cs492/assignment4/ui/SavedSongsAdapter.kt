@@ -1,5 +1,6 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,42 @@ class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDelet
             Glide.with(itemView.context)
                 .load(song.songImage)
                 .into(songImageView)
+
+            if (!song.shortUrl.isNullOrEmpty()) {
+                songImageView.setOnClickListener {
+
+                    val mediaPlayer = MediaPlayer()
+                    mediaPlayer.setDataSource(song.shortUrl)
+                    mediaPlayer.prepareAsync()
+
+                    mediaPlayer.setOnPreparedListener { mediaPlayer ->
+                        mediaPlayer.start()
+
+                        songImageView.postDelayed({
+                            if (mediaPlayer.isPlaying) {
+                                mediaPlayer.stop()
+                                mediaPlayer.release()
+                            }
+                        }, 15000)
+                    }
+
+                    mediaPlayer.setOnCompletionListener { mediaPlayer ->
+                        mediaPlayer.release()
+                    }
+
+                    songImageView.setOnClickListener {
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
+                        } else {
+                            mediaPlayer.start()
+                        }
+                    }
+                }
+            } else {
+                songImageView.setImageAlpha(100)
+            }
         }
+
+
     }
 }
