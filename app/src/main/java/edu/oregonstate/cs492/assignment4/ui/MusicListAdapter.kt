@@ -67,6 +67,7 @@ class MusicListAdapter(
 
         if (musicItem.shortUrl.isNotBlank()) {
             songImageView.setOnClickListener {
+                songImageView.setBackgroundResource(R.drawable.image_border)
                 val mediaPlayer = MediaPlayer()
                 mediaPlayer.setDataSource(musicItem.shortUrl)
                 mediaPlayer.prepareAsync()
@@ -78,6 +79,7 @@ class MusicListAdapter(
                         if (mediaPlayer.isPlaying) {
                             mediaPlayer.stop()
                             mediaPlayer.release()
+                            songImageView.setBackgroundResource(0)
                         }
                     }, 15000)
                 }

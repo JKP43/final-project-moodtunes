@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingVertical="8dp">
 
 
     <ImageView
@@ -33,24 +34,31 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"/>
 
-        <Button
-            android:id="@+id/shareButton"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Share"
-            android:layout_below="@id/songImageView"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
-        <Button
-            android:id="@+id/saveAndViewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save and View Saved"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+            <Button
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share"
+                android:layout_below="@id/songImageView"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"/>
+            <Button
+                android:id="@+id/saveAndViewButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save and View Saved"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>

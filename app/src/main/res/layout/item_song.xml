@@ -13,6 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/pref_city_key"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
