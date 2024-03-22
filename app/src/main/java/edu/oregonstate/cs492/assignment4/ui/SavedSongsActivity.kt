@@ -14,6 +14,7 @@ import edu.oregonstate.cs492.assignment4.data.DatabaseBuilder
 import kotlinx.coroutines.launch
 
 class SavedSongsActivity : AppCompatActivity() {
+    private lateinit var adapter: SavedSongsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saved_songs)
@@ -27,9 +28,17 @@ class SavedSongsActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.saved_songs_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = SavedSongsAdapter(emptyList())
+        adapter = SavedSongsAdapter(emptyList()) { songToDelete ->
+            lifecycleScope.launch {
+                DatabaseBuilder.getInstance(applicationContext).songDao().deleteSong(songToDelete.shortUrl)
+                refreshSongs()
+            }
+        }
         recyclerView.adapter = adapter
+        refreshSongs()
+    }
 
+    private fun refreshSongs() {
         lifecycleScope.launch {
             val songs = DatabaseBuilder.getInstance(applicationContext).songDao().getAllSongs()
             adapter.updateSongs(songs)

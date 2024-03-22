@@ -27,7 +27,6 @@ import edu.oregonstate.cs492.assignment4.data.SongEntity
 import kotlinx.coroutines.launch
 
 class MusicActivity () : AppCompatActivity() {
-    // Assume the music list is passed from the previous page or fetched based on mood search
     private var musicList: List<MusicFormat> = emptyList()
     private val viewModel: MusicViewModel by viewModels()
     private lateinit var mood: String
@@ -45,9 +44,6 @@ class MusicActivity () : AppCompatActivity() {
 
         val listView: ListView = findViewById(R.id.listView)
 
-        // Use ArrayAdapter to display song titles in the ListView
-// This is inside onCreate of MusicActivity
-// Remove the navigateToSavedSongs() call from here
         val adapter = MusicListAdapter(
             this,
             R.layout.music_list_item,
@@ -64,12 +60,10 @@ class MusicActivity () : AppCompatActivity() {
                             duration = musicItem.duration
                         )
                     )
-                    // Result checking and toast should be inside this block
                     if (insertResult == -1L) {
                         Toast.makeText(applicationContext, "Song has already been added!", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
-                        // Now call navigateToSavedSongs() only if the song was successfully added
                         navigateToSavedSongs()
                     }
                 }
@@ -94,8 +88,6 @@ class MusicActivity () : AppCompatActivity() {
             }
         }
 
-
-// ... rest of your MusicActivity class
 
 // Set click listener for the ListView
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->

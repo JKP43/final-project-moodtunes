@@ -18,31 +18,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import edu.oregonstate.cs492.assignment4.R
 
-/*
- * Often, we'll have sensitive values associated with our code, like API keys, that we'll want to
- * keep out of our git repo, so random GitHub users with permission to view our repo can't see them.
- * The OpenWeather API key is like this.  We can keep our API key out of source control using the
- * technique described below.  Note that values configured in this way can still be seen in the
- * app bundle installed on the user's device, so this isn't a safe way to store values that need
- * to be kept secret at all costs.  This will only keep them off of GitHub.
- *
- * The Gradle scripts for this app are set up to read your API key from a special Gradle file
- * that lives *outside* your project directory.  This file called `gradle.properties`, and it
- * should live in your GRADLE_USER_HOME directory (this will usually be `$HOME/.gradle/` in
- * MacOS/Linux and `$USER_HOME/.gradle/` in Windows).  To store your API key in `gradle.properties`,
- * make sure that file exists in the correct location, and then add the following line:
- *
- *   OPENWEATHER_API_KEY="<put_your_own_OpenWeather_API_key_here>"
- *
- * If your API key is stored in that way, the Gradle build for this app will grab it and write it
- * into the string resources for the app with the resource name "openweather_api_key".  You'll be
- * able to access your key in the app's Kotlin code the same way you'd access any other string
- * resource, e.g. `getString(R.string.openweather_api_key)`.  This is what's done in the code below
- * when the OpenWeather API key is needed.
- *
- * If you don't mind putting your OpenWeather API key on GitHub, then feel free to just hard-code
- * it in the app. 🤷‍
- */
 
 class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfig: AppBarConfiguration
@@ -62,12 +37,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(appBar)
         setupActionBarWithNavController(navController, appBarConfig)
 
-        /*
-         * Set up a MenuProvider to provide and handle app bar actions for all screens under this
-         * activity.
-         */
+
     }
 
+    /*
+ * Set up a MenuProvider to provide and handle app bar actions for all screens under this
+ * activity.
+ */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true

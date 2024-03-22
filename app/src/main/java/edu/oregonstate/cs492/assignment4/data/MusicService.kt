@@ -11,17 +11,6 @@ import retrofit2.http.Query
  * This is a Retrofit service interface encapsulating communication with the OpenWeather API.
  */
 interface MusicService {
-    /**
-     * This method is used to query the OpenWeather API's 5-day/3-hour forecast method:
-     * https://openweathermap.org/forecast5.  This is a suspending function, so it must be called
-     * in a coroutine or within another suspending function.
-     *
-     * @param client_id Specifies the id of the api user.
-     * @param tags Specifies the type of music that should be returned by the api endpoint".
-     *
-     * @return Returns a Retrofit `Response<>` object that will contain a [MusicForecast] object
-     *   if the API call was successful.
-     */
     @GET("tracks")
     suspend fun loadMusic(
         @Query("client_id") clientId: String,
