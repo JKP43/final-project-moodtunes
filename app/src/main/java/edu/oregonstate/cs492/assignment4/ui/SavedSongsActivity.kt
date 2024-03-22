@@ -1,5 +1,6 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -16,7 +17,13 @@ import kotlinx.coroutines.launch
 class SavedSongsActivity : AppCompatActivity() {
     private lateinit var adapter: SavedSongsAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Retrieve the theme choice from SharedPreferences
+        val sharedPreferences = getSharedPreferences(
+            "theme_prefs",
+            Context.MODE_PRIVATE
+        )
         super.onCreate(savedInstanceState)
+        val isDarkTheme = sharedPreferences.getBoolean("is_dark_theme", false)
         setContentView(R.layout.activity_saved_songs)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -28,7 +35,7 @@ class SavedSongsActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.saved_songs_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = SavedSongsAdapter(emptyList()) { songToDelete ->
+        adapter = SavedSongsAdapter(emptyList(), isDarkTheme) { songToDelete ->
             lifecycleScope.launch {
                 DatabaseBuilder.getInstance(applicationContext).songDao().deleteSong(songToDelete.shareUrl)
                 refreshSongs()

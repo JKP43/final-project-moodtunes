@@ -14,11 +14,14 @@ import edu.oregonstate.cs492.assignment4.R
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
+import androidx.core.content.ContextCompat
+
 class MusicListAdapter(
     context: Context,
     private val resourceLayout: Int,
     private val musicList: List<MusicFormat>,
-    private val onSaveAndViewClicked: (MusicFormat) -> Unit
+    private val onSaveAndViewClicked: (MusicFormat) -> Unit,
+    private val isDarkTheme: Boolean
 ) : ArrayAdapter<MusicFormat>(context, resourceLayout, musicList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -38,6 +41,14 @@ class MusicListAdapter(
 
         artistTextView.text = musicItem.artist
         songTitleTextView.text = musicItem.songTitle
+
+        val textColorResId = if (isDarkTheme) R.color.white else R.color.black
+        artistTextView.setTextColor(ContextCompat.getColor(context, textColorResId))
+        songTitleTextView.setTextColor(ContextCompat.getColor(context, textColorResId))
+
+        // Adjust background color based on theme
+        val backgroundColorResId = if (isDarkTheme) R.color.md_theme_dark_background else R.color.md_theme_light_background
+        rowView.setBackgroundResource(backgroundColorResId)
 
         Glide.with(context)
             .load(musicItem.songImage)

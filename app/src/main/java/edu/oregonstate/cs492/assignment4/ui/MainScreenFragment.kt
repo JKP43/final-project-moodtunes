@@ -1,7 +1,9 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,24 +42,53 @@ class MainScreenFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val selectedMood = remember { mutableStateOf("") }
-                MainScreen(onMoodSelected = { mood ->
-                    selectedMood.value = mood
-                    navigateToSongs(mood)
-                })
+                val isDarkTheme = remember { mutableStateOf(getSavedThemeChoice()) }
+
+                MainScreen(
+                    onMoodSelected = { mood ->
+                        selectedMood.value = mood
+                        navigateToSongs(mood, isDarkTheme.value)
+                    },
+                    onThemeToggled = { isDark ->
+                        isDarkTheme.value = isDark
+                        saveThemeChoice(isDark)
+                    },
+                    isDarkTheme.value
+                )
             }
         }
     }
 
-    private fun navigateToSongs(mood: String) {
+    private fun navigateToSongs(mood: String, isDarkTheme: Boolean) {
         val intent = Intent(requireContext(), MusicActivity::class.java)
         intent.putExtra("musicList", mood)
+        intent.putExtra("isDarkTheme", isDarkTheme)
         startActivity(intent)
+    }
+
+    private fun saveThemeChoice(isDark: Boolean) {
+        Log.d("MainScreenFragment", "Dark theme toggled: $isDark")
+        val sharedPreferences = requireContext().getSharedPreferences(
+            "theme_prefs",
+            Context.MODE_PRIVATE
+        )
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("is_dark_theme", isDark)
+        editor.apply()
+    }
+    private fun getSavedThemeChoice(): Boolean {
+        val sharedPreferences = requireContext().getSharedPreferences(
+            "theme_prefs",
+            Context.MODE_PRIVATE
+        )
+        return sharedPreferences.getBoolean("is_dark_theme", false)
     }
 }
 
+
 @Composable
-fun MainScreen(onMoodSelected: (String) -> Unit) {
-    var isDarkTheme by remember { mutableStateOf(false) }
+fun MainScreen(onMoodSelected: (String) -> Unit, onThemeToggled: (Boolean) -> Unit, isDarkTheme: Boolean) {
+    var isDarkTheme by remember { mutableStateOf(isDarkTheme) }
 
     val backgroundColor = if (isDarkTheme) Color.DarkGray else Color.LightGray
     val textColor = if (isDarkTheme) Color.LightGray else Color.DarkGray
@@ -86,6 +118,7 @@ fun MainScreen(onMoodSelected: (String) -> Unit) {
                         checked = isDarkTheme,
                         onCheckedChange = { isChecked ->
                             isDarkTheme = isChecked
+                            onThemeToggled(isChecked)
                         },
                         modifier = Modifier
                             .padding(end = 16.dp)

@@ -13,4 +13,6 @@
     <style name="TextAppearance.WeatherApp.LowTempLarge" parent="TextAppearance.WeatherApp.LowTempSmall">
         <item name="android:textSize">32sp</item>
     </style>
+
+
 </resources>

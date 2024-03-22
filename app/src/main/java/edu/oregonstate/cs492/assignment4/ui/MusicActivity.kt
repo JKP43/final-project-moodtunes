@@ -1,5 +1,6 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -15,7 +16,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
 import edu.oregonstate.cs492.assignment4.R
 import edu.oregonstate.cs492.assignment4.data.AppDatabase
 import edu.oregonstate.cs492.assignment4.data.DatabaseBuilder
@@ -34,15 +34,27 @@ class MusicActivity () : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Retrieve the theme choice from SharedPreferences
+        val sharedPreferences = getSharedPreferences(
+            "theme_prefs",
+            Context.MODE_PRIVATE
+        )
+
+
         super.onCreate(savedInstanceState)
+
+        // Retrieve the theme choice from intent extras
+        val isDarkTheme = sharedPreferences.getBoolean("is_dark_theme", false)
+
+
         setContentView(R.layout.activity_music)
+        val listView: ListView = findViewById(R.id.listView)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-
-        val listView: ListView = findViewById(R.id.listView)
 
         val adapter = MusicListAdapter(
             this,
@@ -67,7 +79,8 @@ class MusicActivity () : AppCompatActivity() {
                         navigateToSavedSongs()
                     }
                 }
-            }
+            },
+            isDarkTheme
         )
 
 

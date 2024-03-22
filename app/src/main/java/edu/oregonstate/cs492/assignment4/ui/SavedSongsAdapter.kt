@@ -1,17 +1,24 @@
 package edu.oregonstate.cs492.assignment4.ui
 
+import android.content.Context
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import edu.oregonstate.cs492.assignment4.R
 import edu.oregonstate.cs492.assignment4.data.SongEntity
 
-class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDeleteClicked: (SongEntity) -> Unit) : RecyclerView.Adapter<SavedSongsAdapter.ViewHolder>() {
+class SavedSongsAdapter(
+    private var songs: List<SongEntity>,
+    private val isDarkTheme: Boolean,
+    private val onDeleteClicked: (SongEntity) -> Unit
+    ) : RecyclerView.Adapter<SavedSongsAdapter.ViewHolder>() {
 
     fun updateSongs(newSongs: List<SongEntity>) {
         songs = newSongs
@@ -26,7 +33,7 @@ class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDelet
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val song = songs[position]
-        holder.bind(song)
+        holder.bind(song, isDarkTheme)
         holder.itemView.findViewById<ImageView>(R.id.deleteButton).setOnClickListener {
             onDeleteClicked(song)
         }
@@ -39,9 +46,19 @@ class SavedSongsAdapter(private var songs: List<SongEntity>, private val onDelet
         private val songTitleTextView: TextView = itemView.findViewById(R.id.songTitleTextView)
         private val songImageView: ImageView = itemView.findViewById(R.id.songImageView)
 
-        fun bind(song: SongEntity) {
+        fun bind(song: SongEntity, isDarkTheme: Boolean) {
+            val backgroundColor = if (isDarkTheme) R.color.md_theme_dark_background else R.color.md_theme_light_background
+            val textColorResId = if (isDarkTheme) R.color.white else R.color.black
+            val textColor = ContextCompat.getColor(itemView.context, textColorResId)
+
+            itemView.setBackgroundResource(backgroundColor)
+
             artistTextView.text = song.artist
             songTitleTextView.text = song.songTitle
+
+            artistTextView.setTextColor(textColor)
+            songTitleTextView.setTextColor(textColor)
+
             Glide.with(itemView.context)
                 .load(song.songImage)
                 .into(songImageView)
