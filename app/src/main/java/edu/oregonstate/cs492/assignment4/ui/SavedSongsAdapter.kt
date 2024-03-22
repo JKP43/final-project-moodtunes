@@ -47,7 +47,7 @@ class SavedSongsAdapter(
         private val songImageView: ImageView = itemView.findViewById(R.id.songImageView)
 
         fun bind(song: SongEntity, isDarkTheme: Boolean) {
-            val backgroundColor = if (isDarkTheme) R.color.md_theme_dark_background else R.color.md_theme_light_background
+            val backgroundColor = if (isDarkTheme) R.color.md_theme_light_secondary else R.color.md_theme_light_background
             val textColorResId = if (isDarkTheme) R.color.white else R.color.black
             val textColor = ContextCompat.getColor(itemView.context, textColorResId)
 

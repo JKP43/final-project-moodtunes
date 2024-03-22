@@ -47,7 +47,7 @@ class MusicListAdapter(
         songTitleTextView.setTextColor(ContextCompat.getColor(context, textColorResId))
 
         // Adjust background color based on theme
-        val backgroundColorResId = if (isDarkTheme) R.color.md_theme_dark_background else R.color.md_theme_light_background
+        val backgroundColorResId = if (isDarkTheme) R.color.md_theme_light_secondary else R.color.md_theme_light_background
         rowView.setBackgroundResource(backgroundColorResId)
 
         Glide.with(context)
