@@ -9,23 +9,7 @@
         android:id="@+id/main_screen"
         android:label="Select Your Mood"
         android:name="edu.oregonstate.cs492.assignment4.ui.MainScreenFragment">
-        <action
-            android:id="@+id/navigate_to_five_day_forecast"
-            app:destination="@id/five_day_forecast"/>
     </fragment>
 
-    <fragment
-        android:id="@+id/five_day_forecast"
-        android:label="@string/label_five_day_forecast"
-        android:name="edu.oregonstate.cs492.assignment4.ui.FiveDayForecastFragment" />
-
-    <fragment
-        android:id="@+id/settings"
-        android:label="@string/label_settings"
-        android:name="edu.oregonstate.cs492.assignment4.ui.SettingsFragment" />
-
-    <action
-        android:id="@+id/navigate_to_settings"
-        app:destination="@id/settings" />
 
 </navigation>

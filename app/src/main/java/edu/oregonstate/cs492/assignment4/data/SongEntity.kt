@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "songs")
 data class SongEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey @ColumnInfo(name = "shortUrl") val shortUrl: String,
     @ColumnInfo(name = "artist") val artist: String,
     @ColumnInfo(name = "songTitle") val songTitle: String,
-    @ColumnInfo(name = "shortUrl") val shortUrl: String,
     @ColumnInfo(name = "shareUrl") val shareUrl: String,
     @ColumnInfo(name = "songImage") val songImage: String,
     @ColumnInfo(name = "duration") val duration: Int
 )
+

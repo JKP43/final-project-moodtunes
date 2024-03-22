@@ -13,7 +13,11 @@ object DatabaseBuilder {
                 INSTANCE = Room.databaseBuilder(context.applicationContext,
                     AppDatabase::class.java,
                     "moodtunes-database"
-                ).build()
+
+
+                )
+                .fallbackToDestructiveMigration()
+                .build()
             }
         }
         return INSTANCE!!

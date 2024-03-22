@@ -47,13 +47,14 @@ class MusicActivity () : AppCompatActivity() {
 
         // Use ArrayAdapter to display song titles in the ListView
 // This is inside onCreate of MusicActivity
+// Remove the navigateToSavedSongs() call from here
         val adapter = MusicListAdapter(
             this,
             R.layout.music_list_item,
             musicTitles,
             onSaveAndViewClicked = { musicItem ->
                 lifecycleScope.launch {
-                    DatabaseBuilder.getInstance(applicationContext).songDao().insertSong(
+                    val insertResult = DatabaseBuilder.getInstance(applicationContext).songDao().insertSong(
                         SongEntity(
                             artist = musicItem.artist,
                             songTitle = musicItem.songTitle,
@@ -63,13 +64,18 @@ class MusicActivity () : AppCompatActivity() {
                             duration = musicItem.duration
                         )
                     )
-                    Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
+                    // Result checking and toast should be inside this block
+                    if (insertResult == -1L) {
+                        Toast.makeText(applicationContext, "Song has already been added!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
+                        // Now call navigateToSavedSongs() only if the song was successfully added
+                        navigateToSavedSongs()
+                    }
                 }
-                // You can call navigateToSavedSongs() here if you want immediate navigation
-                // after saving. If you only want to navigate without saving, adjust as needed.
-                navigateToSavedSongs()
             }
         )
+
 
         listView.adapter = adapter
 
@@ -89,17 +95,19 @@ class MusicActivity () : AppCompatActivity() {
         }
 
 
-        // Set click listener for the ListView
+// ... rest of your MusicActivity class
+
+// Set click listener for the ListView
         listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             // Get the clicked song
             val selectedMusic = musicList[position]
 
             // Inside your ListView's click listener, after the selectedMusic is defined
-            val db = DatabaseBuilder.getInstance(applicationContext)
-            val songDao = db.songDao()
+            val songDao = DatabaseBuilder.getInstance(applicationContext).songDao()
 
             lifecycleScope.launch {
-                songDao.insertSong(
+                // Try to insert the song and get the result of the insertion
+                val insertResult = songDao.insertSong(
                     SongEntity(
                         artist = selectedMusic.artist,
                         songTitle = selectedMusic.songTitle,
@@ -109,12 +117,18 @@ class MusicActivity () : AppCompatActivity() {
                         duration = selectedMusic.duration
                     )
                 )
+                // Check if the insertResult is -1, which means the song wasn't inserted because it already exists
+                if (insertResult == -1L) {
+                    Toast.makeText(applicationContext, "Song has already been added!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
+                    // Open the share URL of the selected music in browser
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(selectedMusic.shareUrl))
+                    startActivity(intent)
+                }
             }
-            Toast.makeText(applicationContext, "Song saved to favorites!", Toast.LENGTH_SHORT).show()
-            // Open the share URL of the selected music in browser
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(selectedMusic.shareUrl))
-            startActivity(intent)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
